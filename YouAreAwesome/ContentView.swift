@@ -8,37 +8,44 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var message = "I Am A Programmer!"
+    @State private var message = ""
+    @State private var imageName = ""
     var body: some View {
         VStack {
             Spacer()
-            Image(systemName: "swift")
+            Image(imageName)
                 .resizable()
                 .scaledToFit()
-                .foregroundStyle(.orange)
-                .frame(width: 200, height: 200)
-            Text("You Are Awesome!")
+                .clipShape(RoundedRectangle(cornerRadius: 30))
+                .shadow(radius:30)
+//            Image(systemName: imageString)
+//                .resizable()
+//                .scaledToFit()
+//                .foregroundStyle(.orange)
             Text(message)
                 .font(.largeTitle)
-                .fontWeight(.ultraLight)
-//                .foregroundStyle(.red)
+                .fontWeight(.heavy)
+                .foregroundStyle(.red)
+            //                .foregroundStyle(.red)
             Spacer()
-            HStack {
-                Spacer()
-                Button("Awesome!") {
-                    message = "Awesome!"
-                    print(message)
-                }
-                Spacer()
-                Button("Great!") {
-                    message = "Great!"
-                    print(message)
-                }
-                Spacer()
+            Button("Press Me!") {
+                let message1 = "You Are Awesome!"
+                let message2 = "You Are Great!"
+//               let imageString1 = "hand.thumbsup"
+//             let imageString2 = "sun.max.fill"
+//                if message == message1 {
+//                    message = message2
+//                    imageString = imageString2
+//                } else {
+//                    message = message1
+//                    imageString = imageString1
+//                }
+                message = ( message == message1 ? message2 : message1)
+                imageName = ( imageName == "image0" ? "image1" : "image0")
             }
             .buttonStyle(.borderedProminent)
             .font(.title2)
-            .tint(.orange)
+//            .tint(.orange)
         }
         .padding()
         
