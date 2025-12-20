@@ -43,11 +43,14 @@ struct ContentView: View {
                                 "You Are Amazing!",
                                 "You Make Me Smile!"
                 ]
-                message=messages[messageNumber]
-                messageNumber += 1
-                if messageNumber == messages.count {
-                    messageNumber = 0
-                }
+                message=messages.randomElement()!
+//                imageNumber=Int.random(in: 0...9)
+                imageName=("image\(Int.random(in: 0...9))")
+//                message=messages[messageNumber]
+//                messageNumber += 1
+//                if messageNumber == messages.count {
+//                    messageNumber = 0
+//                }
                  
  //               print(messages)
 //                let message1 = "You Are Awesome!"
@@ -66,11 +69,11 @@ struct ContentView: View {
 
                 //TODO: Update the imageName variable
 //                imageName = "image" + String(imageNumber)
-                imageName = ("image\(imageNumber)")
-                imageNumber += 1
-                if imageNumber > 9 {
-                    imageNumber = 0
-                }
+//                imageName = ("image\(imageNumber)")
+//                imageNumber += 1
+//                if imageNumber > 9 {
+//                    imageNumber = 0
+//                }
  //               print(imageNumber)
 
 
