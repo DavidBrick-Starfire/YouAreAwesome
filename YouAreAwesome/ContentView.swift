@@ -40,10 +40,10 @@ struct ContentView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 30))
                 .shadow(radius:30)
                 .animation(.default, value: imageName)
-//            Image(systemName: imageString)
-//                .resizable()
-//                .scaledToFit()
-//                .foregroundStyle(.orange)
+            //            Image(systemName: imageString)
+            //                .resizable()
+            //                .scaledToFit()
+            //                .foregroundStyle(.orange)
             Spacer()
             Button("Show Message")  {
                 let messages = ["You Are Awesome!",
@@ -53,77 +53,62 @@ struct ContentView: View {
                                 "You Are Amazing!",
                                 "You Make Me Smile!"
                 ]
-                repeat {
-                    messageNumber=Int.random(in: 0..<messages.count)
-                } while messageNumber == lastMessageNumber
-                lastMessageNumber=messageNumber
-                message = messages[messageNumber]
-                //                message=messages.randomElement()!
-                //                imageNumber=Int.random(in: 0...9)
-                
-                repeat {
-                    imageNumber=Int.random(in: 0...numberOfImages-1)
-                } while imageNumber == lastImageNumber
-                lastImageNumber=imageNumber
-                imageName=("image\(Int.random(in: 0..<numberOfImages))")
-                
-                repeat {
-                    soundNumber=Int.random(in: 0...numberOfSounds-1)
-                    print(soundNumber)
-                } while soundNumber == lastSoundNumber
-                lastSoundNumber=soundNumber
-                soundName=("sound\(soundNumber)")
-                
-                guard let soundFile = NSDataAsset(name: soundName) else {
-                    print("😡 Could not read file named \(soundName)")
-                    return
-                }
-                do {
-                    audioPlayer = try AVAudioPlayer(data: soundFile.data)
-                    audioPlayer.play()
-                } catch {
-                    print("😡 ERROR: \(error.localizedDescription) creating audioPlayer.")
-                }
+//                repeat {
+//                    messageNumber=Int.random(in: 0..<messages.count)
+//                } while messageNumber == lastMessageNumber
+//                lastMessageNumber=messageNumber
+//                message = messages[messageNumber]
+//                //                message=messages.randomElement()!
+//                //                imageNumber=Int.random(in: 0...9)
+//                
+//                repeat {
+//                    imageNumber=Int.random(in: 0...numberOfImages-1)
+//                } while imageNumber == lastImageNumber
+//                lastImageNumber=imageNumber
+//                imageName=("image\(Int.random(in: 0..<numberOfImages))")
+//                
+//                repeat {
+//                    soundNumber=Int.random(in: 0...numberOfSounds-1)
+//                    print(soundNumber)
+//                } while soundNumber == lastSoundNumber
+//                lastSoundNumber=soundNumber
+ //TODO remove code and call the function
+                lastMessageNumber = nonRepeatingRandom(lastNumber: lastMessageNumber, upperBounds: messages.count-1)
+                message=messages[lastMessageNumber]
+                lastImageNumber = nonRepeatingRandom(lastNumber: lastImageNumber, upperBounds: numberOfImages-1)
+                imageName = ("image\(lastImageNumber)")
+                lastSoundNumber = nonRepeatingRandom(lastNumber: lastSoundNumber, upperBounds: numberOfSounds-1)
+                playSound(soundName: "sound\(lastSoundNumber)")
+                print("\(lastMessageNumber), \(lastImageNumber), \(lastSoundNumber)")
             }
+            .buttonStyle(.borderedProminent)
+            .font(.title2)
         }
-        .buttonStyle(.borderedProminent)
-        .font(.title2)
         .padding()
-        //                message=messages[messageNumber]
-        //                messageNumber += 1
-        //                if messageNumber == messages.count {
-        //                    messageNumber = 0
-        //                }
-        
-        //               print(messages)
-        //                let message1 = "You Are Awesome!"
-        //            let message2 = "You Are Great!"
-        //               let imageString1 = "hand.thumbsup"
-        //             let imageString2 = "sun.max.fill"
-        //                if message == message1 {
-        //                    message = message2
-        //                    imageString = imageString2
-        //                } else {
-        //                    message = message1
-        //                    imageString = imageString1
-        //                }
-        //                message = ( message == message1 ? message2 : message1)
-        //                imageName = ( imageName == "image0" ? "image1" : "image0")
-        
-        //TODO: Update the imageName variable
-        //                imageName = "image" + String(imageNumber)
-        //                imageName = ("image\(imageNumber)")
-        //                imageNumber += 1
-        //                if imageNumber > 9 {
-        //                    imageNumber = 0
-        //                }
-        //               print(imageNumber)
-        
-        
-        //            .tint(.orange)
     }
     
+    func nonRepeatingRandom(lastNumber: Int, upperBounds: Int) -> Int {
+        var randomNumber = 0
+        repeat {
+            randomNumber=Int.random(in: 0...upperBounds-1)
+        } while randomNumber == lastNumber
+        return randomNumber
+    }
+    
+    func playSound(soundName: String) {
+        guard let soundFile = NSDataAsset(name: soundName) else {
+            print("😡 Could not read file named \(soundName)")
+            return
+        }
+        do {
+            audioPlayer = try AVAudioPlayer(data: soundFile.data)
+            audioPlayer.play()
+        } catch {
+            print("😡 ERROR: \(error.localizedDescription) creating audioPlayer.")
+        }
+    }
 }
+
 
 
 #Preview {
