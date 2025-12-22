@@ -19,6 +19,7 @@ struct ContentView: View {
     @State private var lastImageNumber = -1
     @State private var lastSoundNumber = -1
     @State private var audioPlayer : AVAudioPlayer!
+    @State private var soundIsOn = true
     let numberOfImages = 10
     let numberOfSounds = 6
     
@@ -45,44 +46,38 @@ struct ContentView: View {
             //                .scaledToFit()
             //                .foregroundStyle(.orange)
             Spacer()
-            Button("Show Message")  {
-                let messages = ["You Are Awesome!",
-                                "When the Genius Bar Needs Help, They Call You!",
-                                "You Are Great!",
-                                "Fabulous? That's You!",
-                                "You Are Amazing!",
-                                "You Make Me Smile!"
-                ]
-//                repeat {
-//                    messageNumber=Int.random(in: 0..<messages.count)
-//                } while messageNumber == lastMessageNumber
-//                lastMessageNumber=messageNumber
-//                message = messages[messageNumber]
-//                //                message=messages.randomElement()!
-//                //                imageNumber=Int.random(in: 0...9)
-//                
-//                repeat {
-//                    imageNumber=Int.random(in: 0...numberOfImages-1)
-//                } while imageNumber == lastImageNumber
-//                lastImageNumber=imageNumber
-//                imageName=("image\(Int.random(in: 0..<numberOfImages))")
-//                
-//                repeat {
-//                    soundNumber=Int.random(in: 0...numberOfSounds-1)
-//                    print(soundNumber)
-//                } while soundNumber == lastSoundNumber
-//                lastSoundNumber=soundNumber
- //TODO remove code and call the function
-                lastMessageNumber = nonRepeatingRandom(lastNumber: lastMessageNumber, upperBounds: messages.count-1)
-                message=messages[lastMessageNumber]
-                lastImageNumber = nonRepeatingRandom(lastNumber: lastImageNumber, upperBounds: numberOfImages-1)
-                imageName = ("image\(lastImageNumber)")
-                lastSoundNumber = nonRepeatingRandom(lastNumber: lastSoundNumber, upperBounds: numberOfSounds-1)
-                playSound(soundName: "sound\(lastSoundNumber)")
-                print("\(lastMessageNumber), \(lastImageNumber), \(lastSoundNumber)")
+            HStack {
+                Text("Sound On:")
+                Toggle("", isOn: $soundIsOn)
+                    .labelsHidden()
+                    .onChange(of: soundIsOn) {
+                        if audioPlayer != nil && audioPlayer.isPlaying {
+                            audioPlayer.stop()
+                        }
+                    }
+                Spacer()
+                
+                Button("Show Message")  {
+                    let messages = ["You Are Awesome!",
+                                    "When the Genius Bar Needs Help, They Call You!",
+                                    "You Are Great!",
+                                    "Fabulous? That's You!",
+                                    "You Are Amazing!",
+                                    "You Make Me Smile!"
+                    ]
+                    lastMessageNumber = nonRepeatingRandom(lastNumber: lastMessageNumber, upperBounds: messages.count-1)
+                    message=messages[lastMessageNumber]
+                    lastImageNumber = nonRepeatingRandom(lastNumber: lastImageNumber, upperBounds: numberOfImages-1)
+                    imageName = ("image\(lastImageNumber)")
+                    lastSoundNumber = nonRepeatingRandom(lastNumber: lastSoundNumber, upperBounds: numberOfSounds-1)
+                    if soundIsOn {
+                        playSound(soundName: "sound\(lastSoundNumber)")
+                    }
+                    print("\(lastMessageNumber), \(lastImageNumber), \(lastSoundNumber)")
+                }
+                .buttonStyle(.borderedProminent)
+                .font(.title2)
             }
-            .buttonStyle(.borderedProminent)
-            .font(.title2)
         }
         .padding()
     }
@@ -101,6 +96,9 @@ struct ContentView: View {
             return
         }
         do {
+            if audioPlayer != nil && audioPlayer.isPlaying {
+                audioPlayer.stop()
+            }
             audioPlayer = try AVAudioPlayer(data: soundFile.data)
             audioPlayer.play()
         } catch {
